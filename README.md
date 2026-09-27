@@ -17,16 +17,14 @@ aucune couleur de fond ; les lettres sans couleur prennent la couleur de texte d
 | `fonts/QaloonWaqf-Regular.ttf` | Signes de waqf ۖ ۗ ۘ ۙ ۚ ۛ (dérivée d'Amiri Quran, licence OFL). |
 | `example/index.html` | Exemple d'affichage sur fond transparent. |
 | `images/transparent/001.png` … `604.png` | Pages du mushaf en image, **sans cadre et sans fond** (PNG transparent) : texte, couleurs, rosaces, signes et bandeaux tels qu'imprimés. |
-| `images/transparent_dark/` | Les mêmes pages pour fond sombre : seule l'encre noire devient claire (#F1EDE3). |
 | `images/crop_boxes.json` | Rectangle découpé dans chaque page du scan d'origine. |
 
 ### Images transparentes
 
 Chaque pixel garde la couleur de l'encre imprimée ; la part du pixel couverte par l'encre
 devient la transparence (le papier disparaît, les contours restent lisses). Posez l'image
-directement sur le fond de votre application : `images/transparent` sur fond clair,
-`images/transparent_dark` sur fond sombre. Sur fond sombre, les encres foncées du mushaf
-(bleu marine du rā', bordeaux) restent telles qu'imprimées et sont moins contrastées.
+directement sur un fond clair. L'encre étant sombre, sur un thème sombre posez-les sur un
+fond clair couleur papier.
 Ces images proviennent du scan d'un mushaf imprimé : dépôt à garder privé.
 
 ## Polices

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<title>Qalun page</title>
+<!-- Serve the repository folder over HTTP (e.g. `python -m http.server`) and open /example/ -->
+<style>
+@font-face { font-family: "Qaloon Waqf"; src: url("../fonts/QaloonWaqf-Regular.ttf"); }
+/* The page has no background of its own: it takes the application's. */
+html, body { background: transparent; margin: 0; }
+.mushaf { font-family: "KFGQPC Qaloun Uthmanic Script", "Qaloon Waqf", serif; font-size: 30px;
+  line-height: 2; text-align: justify; color: currentColor; padding: 16px; }
+.ayah-end { font-size: .8em; }
+</style></head><body>
+<div id="page" class="mushaf"></div>
+<script>
+const PAGE = Number(new URLSearchParams(location.search).get("page") || 3);
+const DIGITS = "٠١٢٣٤٥٦٧٨٩";
+Promise.all(["qaloon_mushaf", "qaloon_colours", "qaloon_waqf"].map(n => fetch("../data/" + n + ".json").then(r => r.json())))
+  .then(([mushaf, colours, waqf]) => {
+    // words of the page, in order, from the words table dumped per ayah segment
+    const page = mushaf.pages[PAGE - 1], box = document.getElementById("page");
+    page.ayahs.forEach(seg => {
+      const words = seg.text_bare.split(" ");
+      words.forEach((word, k) => {
+        const index = seg.first_word + k, spans = colours.words[index] || [];
+        let cursor = 0;
+        spans.forEach(([start, end, ink, ok, rgb]) => {
+          if (start > cursor) box.append(word.slice(cursor, start));
+          const s = document.createElement("span"); s.style.color = rgb; s.textContent = word.slice(start, end);
+          box.append(s); cursor = end;
+        });
+        box.append(word.slice(cursor) + (waqf.words[index] || "") + " ");
+      });
+      if (seg.ayah && seg.ends_here) {
+        const n = document.createElement("span"); n.className = "ayah-end";
+        n.textContent = "۝" + String(seg.ayah).replace(/\d/g, d => DIGITS[d]) + " ";
+        box.append(n);
+      }
+    });
+  });
+</script></body></html>
